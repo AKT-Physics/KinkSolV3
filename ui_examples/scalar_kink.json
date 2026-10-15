@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "name": "ScalarKink",
+  "geometry": "cartesian",
+  "grid": {
+    "n": 1001,
+    "spacing": 0.05
+  },
+  "fields": [
+    {
+      "name": "phi",
+      "label": "$\\phi$",
+      "equation": "D2(phi) - lam*phi*(phi**2-v**2)",
+      "guess": "v*tanh(v*sqrt(lam/2)*x)",
+      "left": {
+        "type": "dirichlet",
+        "value": "-v"
+      },
+      "right": {
+        "type": "dirichlet",
+        "value": "v"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "lam",
+      "kind": "fixed",
+      "expression": "1"
+    },
+    {
+      "name": "v",
+      "kind": "fixed",
+      "expression": "1"
+    }
+  ],
+  "equation_mode": "energy",
+  "functional": {
+    "density": "0.5*D(phi)**2 + 0.25*lam*(phi**2-v**2)**2",
+    "weight": "1"
+  },
+  "observable": {
+    "enabled": true,
+    "name": "E",
+    "from_functional": true,
+    "density": "0.5*D(phi)**2 + 0.25*lam*(phi**2-v**2)**2",
+    "weight": "1",
+    "prefactor": "1",
+    "quadrature": "interior_sum"
+  },
+  "plots": [
+    {
+      "expression": "phi",
+      "label": "$\\phi$"
+    }
+  ],
+  "extra_rows": [],
+  "scans": [],
+  "solver": {
+    "use_pointwise_phase": false,
+    "use_trust_region": false,
+    "pointwise_tol": 0.1,
+    "pointwise_max_iter": 100,
+    "pointwise_relaxation": 1.0,
+    "pointwise_freq_out": 1,
+    "final_tol": 1e-09,
+    "final_max_iter": 100,
+    "final_freq_out": 1,
+    "final_step_scale": 1.0,
+    "trust_initial_radius": 1.0,
+    "trust_min_radius": 1e-06,
+    "trust_max_radius": 50.0,
+    "trust_shrink": 0.75,
+    "trust_grow": 1.5,
+    "trust_max_trials": 10,
+    "trust_accept_growth": 50.0,
+    "trust_good_improve": 0.75,
+    "enable_rescue": false,
+    "rescue_pointwise_max_iter": 50,
+    "rescue_pointwise_relaxation": 1.0,
+    "accept_best_near_tol": false,
+    "near_tol_factor": 10.0
+  },
+  "jacobian_autodiff": "auto",
+  "output": {
+    "base_dir": "outputs",
+    "save_point_summary": true,
+    "save_scan_summary": true,
+    "save_observables": true,
+    "save_final_field": true,
+    "save_solution_plots": true,
+    "save_scan_plot": true,
+    "show_solution_plots": true,
+    "show_scan_plot": true,
+    "save_only_converged": true,
+    "concise": false,
+    "plot_dpi": 160,
+    "plot_format": "png"
+  }
+}

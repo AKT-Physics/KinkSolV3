@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "name": "RadialSphaleron",
+  "geometry": "radial",
+  "grid": {
+    "n": 501,
+    "spacing": 0.05
+  },
+  "fields": [
+    {
+      "name": "f",
+      "label": "f",
+      "equation": "D2(f)+2*D(f)/r-2*(sin(gamma/2)**2/r**2+D(gamma)**2/8)*f*(1-h)**2-lambda_p*f*(f**2-1)",
+      "guess": "tanh(r)",
+      "left": {
+        "type": "dirichlet",
+        "value": "0"
+      },
+      "right": {
+        "type": "neumann",
+        "value": "0"
+      }
+    },
+    {
+      "name": "h",
+      "label": "h",
+      "equation": "D2(h)+f**2*(1-h)/4-2*h*(1-h)*(1-2*h)/r**2",
+      "guess": "r**2/(1+r**2)",
+      "left": {
+        "type": "dirichlet",
+        "value": "0"
+      },
+      "right": {
+        "type": "neumann",
+        "value": "0"
+      }
+    },
+    {
+      "name": "gamma",
+      "label": "$\\gamma$",
+      "equation": "gamma-pi",
+      "guess": "pi",
+      "left": {
+        "type": "dirichlet",
+        "value": "pi"
+      },
+      "right": {
+        "type": "neumann",
+        "value": "0"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "lambda_p",
+      "kind": "fixed",
+      "expression": "1"
+    }
+  ],
+  "equation_mode": "direct",
+  "functional": {
+    "density": "",
+    "weight": "1"
+  },
+  "observable": {
+    "enabled": true,
+    "name": "E",
+    "from_functional": false,
+    "density": "D(f)**2/2+f**2*(1-h)**2/r**2+lambda_p*(f**2-1)**2/4+4*(D(h)**2+2*h**2*(1-h)**2/r**2)/r**2",
+    "weight": "r**2",
+    "prefactor": "1",
+    "quadrature": "interior_sum"
+  },
+  "plots": [
+    {
+      "expression": "f",
+      "label": "f"
+    },
+    {
+      "expression": "h",
+      "label": "h"
+    },
+    {
+      "expression": "gamma",
+      "label": "$\\gamma$"
+    }
+  ],
+  "extra_rows": [],
+  "scans": [],
+  "solver": {
+    "use_pointwise_phase": false,
+    "use_trust_region": false,
+    "pointwise_tol": 0.1,
+    "pointwise_max_iter": 100,
+    "pointwise_relaxation": 1.0,
+    "pointwise_freq_out": 1,
+    "final_tol": 1e-09,
+    "final_max_iter": 100,
+    "final_freq_out": 1,
+    "final_step_scale": 1.0,
+    "trust_initial_radius": 1.0,
+    "trust_min_radius": 1e-06,
+    "trust_max_radius": 50.0,
+    "trust_shrink": 0.75,
+    "trust_grow": 1.5,
+    "trust_max_trials": 10,
+    "trust_accept_growth": 50.0,
+    "trust_good_improve": 0.75,
+    "enable_rescue": false,
+    "rescue_pointwise_max_iter": 50,
+    "rescue_pointwise_relaxation": 1.0,
+    "accept_best_near_tol": false,
+    "near_tol_factor": 10.0
+  },
+  "jacobian_autodiff": "auto",
+  "output": {
+    "base_dir": "outputs",
+    "save_point_summary": true,
+    "save_scan_summary": true,
+    "save_observables": true,
+    "save_final_field": true,
+    "save_solution_plots": true,
+    "save_scan_plot": true,
+    "show_solution_plots": true,
+    "show_scan_plot": true,
+    "save_only_converged": true,
+    "concise": false,
+    "plot_dpi": 160,
+    "plot_format": "png"
+  }
+}

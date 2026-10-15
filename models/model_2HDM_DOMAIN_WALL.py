@@ -808,17 +808,6 @@ def compute_observable(field, config, params):
 # =============================================================================
 def make_solution_plot(field, config, params):
     
-    mpl.rcParams["mathtext.fontset"] = 'custom'
-    mpl.rcParams['font.family'] = 'garamond'
-    mpl.rcParams['mathtext.rm'] = 'garamond'
-    plt.rcParams['legend.fontsize'] = 15
-    plt.rcParams['legend.title_fontsize'] = 20
-    plt.rcParams['xtick.labelsize'] = 15
-    plt.rcParams['ytick.labelsize'] = 15
-    plt.rcParams['axes.labelsize'] = 15
-    
-    
-    
     grid, _ = _grid_and_indexer(config)
     x = grid.build_coordinates()[0]
 

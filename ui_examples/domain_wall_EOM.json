@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "name": "DomainWall",
+  "geometry": "cartesian",
+  "grid": {
+    "n": 1001,
+    "spacing": 0.05
+  },
+  "fields": [
+    {
+      "name": "phi",
+      "label": "$\\phi$",
+      "equation": "D2(phi)-lambda_1/2*(phi**2-eta_1**2)*phi-beta*phi*(sigma1**2+sigma2**2)",
+      "guess": "tanh(x/wall_width)",
+      "left": {
+        "type": "neumann",
+        "value": "0"
+      },
+      "right": {
+        "type": "neumann",
+        "value": "0"
+      }
+    },
+    {
+      "name": "sigma1",
+      "label": "$\\sigma_1$",
+      "equation": "D2(sigma1)-lambda_2/2*(sigma1**2+sigma2**2-eta_2**2)*sigma1-beta*phi**2*sigma1",
+      "guess": "sech(x/wall_width)",
+      "left": {
+        "type": "neumann",
+        "value": "0"
+      },
+      "right": {
+        "type": "neumann",
+        "value": "0"
+      }
+    },
+    {
+      "name": "sigma2",
+      "label": "$\\sigma_2$",
+      "equation": "D2(sigma2)-lambda_2/2*(sigma1**2+sigma2**2-eta_2**2)*sigma2-beta*phi**2*sigma2",
+      "guess": "-sech(x/wall_width)",
+      "left": {
+        "type": "neumann",
+        "value": "0"
+      },
+      "right": {
+        "type": "neumann",
+        "value": "0"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "eta_1",
+      "kind": "fixed",
+      "expression": "1"
+    },
+    {
+      "name": "eta_2",
+      "kind": "fixed",
+      "expression": "sqrt(3)/2"
+    },
+    {
+      "name": "beta",
+      "kind": "fixed",
+      "expression": "1"
+    },
+    {
+      "name": "wall_width",
+      "kind": "fixed",
+      "expression": "1"
+    },
+    {
+      "name": "lambda_1",
+      "kind": "derived",
+      "expression": "2*beta"
+    },
+    {
+      "name": "lambda_2",
+      "kind": "derived",
+      "expression": "2*beta"
+    }
+  ],
+  "equation_mode": "direct",
+  "functional": {
+    "density": "",
+    "weight": "1"
+  },
+  "observable": {
+    "enabled": true,
+    "name": "E",
+    "from_functional": false,
+    "density": "D(phi)**2+D(sigma1)**2+D(sigma2)**2+lambda_1/4*(phi**2-eta_1**2)**2+lambda_2/4*(sigma1**2+sigma2**2-eta_2**2)**2+beta*phi**2*(sigma1**2+sigma2**2)",
+    "weight": "1",
+    "prefactor": "1",
+    "quadrature": "interior_sum"
+  },
+  "plots": [
+    {
+      "expression": "phi",
+      "label": "$\\phi$"
+    },
+    {
+      "expression": "sigma1",
+      "label": "$\\sigma_1$"
+    },
+    {
+      "expression": "sigma2",
+      "label": "$\\sigma_2$"
+    },
+    {
+      "expression": "sigma1**2+sigma2**2",
+      "label": "$|\\sigma|^2$"
+    }
+  ],
+  "extra_rows": [],
+  "scans": [],
+  "solver": {
+    "use_pointwise_phase": false,
+    "use_trust_region": false,
+    "pointwise_tol": 0.1,
+    "pointwise_max_iter": 100,
+    "pointwise_relaxation": 1.0,
+    "pointwise_freq_out": 1,
+    "final_tol": 1e-09,
+    "final_max_iter": 100,
+    "final_freq_out": 1,
+    "final_step_scale": 1.0,
+    "trust_initial_radius": 1.0,
+    "trust_min_radius": 1e-06,
+    "trust_max_radius": 50.0,
+    "trust_shrink": 0.75,
+    "trust_grow": 1.5,
+    "trust_max_trials": 10,
+    "trust_accept_growth": 50.0,
+    "trust_good_improve": 0.75,
+    "enable_rescue": false,
+    "rescue_pointwise_max_iter": 50,
+    "rescue_pointwise_relaxation": 1.0,
+    "accept_best_near_tol": false,
+    "near_tol_factor": 10.0
+  },
+  "jacobian_autodiff": "auto",
+  "output": {
+    "base_dir": "outputs",
+    "save_point_summary": true,
+    "save_scan_summary": true,
+    "save_observables": true,
+    "save_final_field": true,
+    "save_solution_plots": true,
+    "save_scan_plot": true,
+    "show_solution_plots": true,
+    "show_scan_plot": true,
+    "save_only_converged": true,
+    "concise": false,
+    "plot_dpi": 160,
+    "plot_format": "png"
+  }
+}
